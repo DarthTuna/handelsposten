@@ -25,11 +25,25 @@ public class CSVHelper
         try (var inputStream = new URL("http://www.gw2spidy.com/api/v0.9/csv/all-items/all").openStream();
                 var reader = new InputStreamReader(inputStream))
         {
-            var parser = new CSVParser(reader, CSVFormat.DEFAULT);
+            var parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withQuote('%'));
             for (var record : parser)
             {
+                int offerAvailability = Integer.parseInt(record.get("offer_availability"));
+                int saleAvailability = Integer.parseInt(record.get("sale_availability"));
+                if (offerAvailability < 10_000 || saleAvailability < 10_000)
+                {
+                    // Wenn ein Item kaum gehandelt wird, lohnt es sich nicht, diese aufzukaufen, weil kein interesse
+                    // daran besteht.
+                    continue;
+                }
                 var entry = new TableEntry();
+                entry.setOfferAvailability(offerAvailability);
+                entry.setSaleAvailability(saleAvailability);
                 entry.setName(record.get("name"));
+                entry.setMaxOfferPrice(Integer.parseInt(record.get("max_offer_unit_price")));
+                entry.setMinSaleUnitPrice(Integer.parseInt(record.get("min_sale_unit_price")));
+                if (entry.getMargin() < 1)
+                    continue;
                 entryList.add(entry);
             }
         }
@@ -37,5 +51,6 @@ public class CSVHelper
         {
             logger.catching(e);
         }
+        logger.info("Insgesamt {} brauchbare items gefunden.", entryList.size());
     }
 }
