@@ -18,6 +18,7 @@ public class Handelsposten extends Application
         var mainView = new MainView();
         var scene = new Scene(mainView.getView());
         primaryStage.setScene(scene);
+        primaryStage.setTitle("Handelsposten-Tool");
         primaryStage.show();
     }
 

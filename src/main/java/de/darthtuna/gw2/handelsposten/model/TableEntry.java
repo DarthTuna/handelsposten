@@ -114,9 +114,8 @@ public class TableEntry
     private void updateMarginPercent()
     {
         if (getMinSaleUnitPrice() != 0)
-            setMarginPercent(BigDecimal.valueOf(getMargin())
-                    .divide(BigDecimal.valueOf(getMinSaleUnitPrice()), 4, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(100)));
+            setMarginPercent(BigDecimal.valueOf(getMargin()).multiply(BigDecimal.valueOf(100))
+                    .divide(BigDecimal.valueOf(getMinSaleUnitPrice()), 4, RoundingMode.HALF_UP));
     }
 
     public IntegerProperty marginProperty()
