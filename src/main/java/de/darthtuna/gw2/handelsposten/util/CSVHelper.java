@@ -17,10 +17,9 @@ public class CSVHelper
 {
     private static final Logger logger = LogManager.getLogger(CSVHelper.class);
 
-    private final List<TableEntry> entryList = new ArrayList<>();
-
-    public void getFile()
+    public List<TableEntry> getFile()
     {
+        List<TableEntry> entryList = new ArrayList<>();
         entryList.clear();
         try (var inputStream = new URL("http://www.gw2spidy.com/api/v0.9/csv/all-items/all").openStream();
                 var reader = new InputStreamReader(inputStream))
@@ -52,5 +51,6 @@ public class CSVHelper
             logger.catching(e);
         }
         logger.info("Insgesamt {} brauchbare items gefunden.", entryList.size());
+        return entryList;
     }
 }

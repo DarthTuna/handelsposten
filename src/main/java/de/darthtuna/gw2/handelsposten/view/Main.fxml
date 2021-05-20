@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.darthtuna.gw2.handelsposten.view.MainPresenter">
+   <center>
+      <TableView fx:id="tvEntries" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="colName" prefWidth="300.0" text="Name" />
+          <TableColumn fx:id="colVerkaufspreis" prefWidth="100.0" text="Verkaufspreis" />
+            <TableColumn fx:id="colMarge" prefWidth="100.0" text="Marge" />
+            <TableColumn fx:id="colMargeProzent" prefWidth="100.0" text="Marge %" />
+        </columns>
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </TableView>
+   </center>
+   <top>
+      <Button fx:id="btAktualisieren" defaultButton="true" mnemonicParsing="false" text="Aktualisieren" BorderPane.alignment="TOP_LEFT">
+         <BorderPane.margin>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </BorderPane.margin>
+      </Button>
+   </top>
+</BorderPane>

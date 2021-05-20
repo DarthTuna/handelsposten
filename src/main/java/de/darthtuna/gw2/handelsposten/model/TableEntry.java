@@ -4,19 +4,22 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class TableEntry
 {
     private final StringProperty name = new SimpleStringProperty();
-    private final IntegerProperty offerAvailability = new SimpleIntegerProperty();
-    private final IntegerProperty saleAvailability = new SimpleIntegerProperty();
+    private int offerAvailability;
+    private int saleAvailability;
     private final IntegerProperty maxOfferPrice = new SimpleIntegerProperty();
     private final IntegerProperty minSaleUnitPrice = new SimpleIntegerProperty();
     private final IntegerProperty maxBuyPriceToBreakEven = new SimpleIntegerProperty();
     private final IntegerProperty margin = new SimpleIntegerProperty();
+    private final ObjectProperty<BigDecimal> marginPercent = new SimpleObjectProperty<>();
 
     public final StringProperty nameProperty()
     {
@@ -33,34 +36,24 @@ public class TableEntry
         this.nameProperty().set(name);
     }
 
-    public final IntegerProperty offerAvailabilityProperty()
-    {
-        return this.offerAvailability;
-    }
-
     public final int getOfferAvailability()
     {
-        return this.offerAvailabilityProperty().get();
+        return offerAvailability;
     }
 
     public final void setOfferAvailability(final int offerAvailability)
     {
-        this.offerAvailabilityProperty().set(offerAvailability);
-    }
-
-    public final IntegerProperty saleAvailabilityProperty()
-    {
-        return this.saleAvailability;
+        this.offerAvailability = offerAvailability;
     }
 
     public final int getSaleAvailability()
     {
-        return this.saleAvailabilityProperty().get();
+        return saleAvailability;
     }
 
     public final void setSaleAvailability(final int saleAvailability)
     {
-        this.saleAvailabilityProperty().set(saleAvailability);
+        this.saleAvailability = saleAvailability;
     }
 
     public final IntegerProperty maxOfferPriceProperty()
@@ -92,6 +85,7 @@ public class TableEntry
     {
         this.minSaleUnitPriceProperty().set(minSaleUnitPrice);
         updateMaxBuyPriceToBreakEven();
+        updateMarginPercent();
     }
 
     private void updateMaxBuyPriceToBreakEven()
@@ -109,6 +103,7 @@ public class TableEntry
     private void updateMargin()
     {
         margin.set(maxBuyPriceToBreakEven.get() - maxOfferPrice.get());
+        updateMarginPercent();
     }
 
     public int getMargin()
@@ -116,8 +111,32 @@ public class TableEntry
         return margin.get();
     }
 
+    private void updateMarginPercent()
+    {
+        if (getMinSaleUnitPrice() != 0)
+            setMarginPercent(BigDecimal.valueOf(getMargin())
+                    .divide(BigDecimal.valueOf(getMinSaleUnitPrice()), 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100)));
+    }
+
     public IntegerProperty marginProperty()
     {
         return margin;
     }
+
+    public final ObjectProperty<BigDecimal> marginPercentProperty()
+    {
+        return this.marginPercent;
+    }
+
+    public final BigDecimal getMarginPercent()
+    {
+        return this.marginPercentProperty().get();
+    }
+
+    public final void setMarginPercent(final BigDecimal marginPercent)
+    {
+        this.marginPercentProperty().set(marginPercent);
+    }
+
 }
