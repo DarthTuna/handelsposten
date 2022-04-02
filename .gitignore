@@ -1,2 +1,8 @@
 /target/
 /bin/
+/.idea/libraries/
+/.idea/workspace.xml
+/.idea/compiler.xml
+/.idea/jarRepositories.xml
+/.idea/codeStyles/
+/.idea/copyright/
